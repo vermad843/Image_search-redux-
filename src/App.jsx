@@ -8,10 +8,9 @@ class App extends Component {
 
   formSubmitted(event) {           
     event.preventDefault();       
-   this.setState({              
-    loading : true,               
-    images : []                
-   });
+  
+  this.props.onSetLoading(true);
+
     API.search(this.state.searchTerm)
     .then(images => {
       this.setState({
@@ -64,6 +63,9 @@ function mapDispatchToProps(dispatch) {
   return {
     onSearchTermChanged(searchTerm) {
       dispatch(actions.searchTermChanged(searchTerm));
+    },
+    onSetLoading(loading) {
+      dispatch(actions.setLoading(loading));
     }
   }
 }
