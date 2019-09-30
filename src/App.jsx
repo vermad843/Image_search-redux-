@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { actions } from './store';
 import API from './API';
 
 class App extends Component {
@@ -20,13 +21,7 @@ class App extends Component {
     });
   }
 
-  
-  searchTermChanged(event) {
-    this.setState({
-     searchTerm : event.target.value                    
-    });
-    
-  }
+
   render() {
     const {title , searchTerm, loading ,images } = this.props ;
          return (
@@ -37,7 +32,7 @@ class App extends Component {
         <form onSubmit ={this.formSubmitted.bind(this)}>
         <label htmlFor = "searchTerm">Search Term</label>
           <input 
-            onChange = {this.searchTermChanged.bind(this)}
+            onChange = {(event) => this.props.onSearchTermChanged(event.target.value)}
             value = {searchTerm}
             className = "u-full-width" 
             type = "text" 
@@ -45,7 +40,7 @@ class App extends Component {
             name = "searchTerm"  />
             <button type = "submit">Search</button>
          </form>
-         {loading ? <img src = "Blocks-1s-200px.gif" /> : '' }      
+         {loading ? <img src = "Blocks-1s-200px.gif" alt = "" /> : '' }      
           <section className = "images">                        
              {images.map((image) => {
                return <img key ={image.id} alt ={image.description} src ={image.image_url[0]} />
@@ -65,8 +60,15 @@ function mapStateToProps(state) {
   }
 }
 
+function mapDispatchToProps(dispatch) {
+  return {
+    onSearchTermChanged(searchTerm) {
+      dispatch(actions.searchTermChanged(searchTerm));
+    }
+  }
+}
 
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps,mapDispatchToProps)(App);
 
 
