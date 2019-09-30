@@ -1,5 +1,7 @@
+import API form './API';
+
+
 const SEARCH_TERM_CHANGED = 'SEARCH_TERM_CHANGED';
-const SET_LOADING = 'SET_LOADING';
 
 const initialState = {
     title : 'React Image Search',
@@ -15,11 +17,11 @@ export const actions = {
             searchTerm
         };
     },
-    setLoading(loading) {
+    getImages(searchTerm){
         return {
-          type : SET_LOADING,
-          loading                   //is a payload
-        };
+         type : 'IMAGES',
+         payload : API.search(searchTerm)
+        }
     }
 }
   
@@ -32,11 +34,19 @@ export function reducer(state = initialState,action) {
             searchTerm : action.searchTerm
         };
     }
-    case SET_LOADING : {
+    case 'IMAGES_PENDING' : {
         return {
             ...state,
-            loading : action.loading
+            images : [],
+            loading : true
         }
+    }
+    case 'IMAGES_FULFILLED': {
+        return {
+            ...state,
+            loading : false,
+            images : action.payload
+        }; 
     }
     default : 
      return state;

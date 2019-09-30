@@ -2,25 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { actions } from './store';
-import API from './API';
 
 class App extends Component {
 
   formSubmitted(event) {           
     event.preventDefault();       
-  
-  this.props.onSetLoading(true);
-
-    API.search(this.state.searchTerm)
-    .then(images => {
-      this.setState({
-        loading : false ,
-       images
-      });
-    });
+  this.props.onGetImages(this.props.searchTerm);
   }
-
-
   render() {
     const {title , searchTerm, loading ,images } = this.props ;
          return (
@@ -64,8 +52,8 @@ function mapDispatchToProps(dispatch) {
     onSearchTermChanged(searchTerm) {
       dispatch(actions.searchTermChanged(searchTerm));
     },
-    onSetLoading(loading) {
-      dispatch(actions.setLoading(loading));
+    onGetImages(searchTerm) {
+      dispatch(actions.getImages(searchTerm));
     }
   }
 }
